@@ -21,7 +21,7 @@ int main(){
     }
 
     //Check if x is an even or odd number and display the result
-    if (x % 2){
+    if (x % 2 == 0){
         printf("x is even\n");
     }
     else {
