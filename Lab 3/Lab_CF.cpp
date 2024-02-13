@@ -1,7 +1,7 @@
 // Lab_CF.cpp
 /*
-The program iterates, displaying x and add 3 to x until x is great than or equal to y.
-Then display if x is even or odd at the end of the iteration
+* The program iterates, displaying x and add 3 to x until x is great than or equal to y.
+* Then display if x is even or odd at the end of the iteration
 */
 
 #include <iostream>
