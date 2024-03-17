@@ -108,7 +108,7 @@ void gameLoop(RPG *player1, RPG *player2){
 
 int main(){
     //intialize object
-    RPG p1 = RPG("Wiz", 70, 45, 15, "mage");
+    RPG p1 = RPG("Wiz", 70, 45, -15, "mage");
     RPG p2 = RPG();
 
     gameLoop(&p1, &p2);

@@ -1,5 +1,6 @@
 #include "RPG.h"
 #include <iostream>
+#include <cstdlib>
 #include <string>
 using namespace std;
 
@@ -25,9 +26,9 @@ RPG::RPG(){
  */
 RPG::RPG(string name, int health, int strength, int defense, string type){
     this->name = name;
-    this->health = health;
-    this->strength = strength;
-    this->defense = defense;
+    this->health = abs(health); //change negative int input into positive int
+    this->strength = abs(strength); //change negative int input into positive int
+    this->defense = abs(defense); //change negative int input into positive int
     this->type = type;
     
     setSkills();
@@ -155,16 +156,33 @@ void RPG::useSkill(RPG *opponent){
 
     // get user input and assign it to chosen_skill_index
     // (e.g. cin >> )
-    cin >> chosen_skill_index;
+    try{
+        // will throw an error message if chosen skill index isn't 0 or 1 
+        if (!(cin >> chosen_skill_index)){
+            cin.clear();
+            cin.ignore();
+            throw("Invaild Value");
+        }
+        if (chosen_skill_index < 0 || chosen_skill_index > 1){
+            throw(chosen_skill_index);
+        }
 
-    // assigns the chosen_skill_index into a string called chosen_skill
-    // no modification needed here
-    string chosen_skill = skills[chosen_skill_index];
+        // assigns the chosen_skill_index into a string called chosen_skill
+        // no modification needed here
+        string chosen_skill = skills[chosen_skill_index];
 
-    // call printAction(string, RPG) and use chosen_skill and (*opponent)
-    // as parameters
-    printAction(chosen_skill, (*opponent));
+        // call printAction(string, RPG) and use chosen_skill and (*opponent)
+        // as parameters
+        printAction(chosen_skill, (*opponent));
 
-    //call attack on opponent
-    attack(opponent);
+        //call attack on opponent
+        attack(opponent);
+
+    }
+    catch(int skill_index){
+        printf("Invaild Input - Input NEED to be in between 0 or 1! Input 0 or 1 on your next turn.\n ");
+    }
+    catch(char const* test){
+        printf("Invalid Input - Input NEED to be a integer! Input 0 or 1 on your next turn.\n");
+    }
 }
