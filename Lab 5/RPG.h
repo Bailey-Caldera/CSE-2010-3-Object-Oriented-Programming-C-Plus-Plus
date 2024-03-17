@@ -17,8 +17,8 @@ class RPG {
 
         // Mutator function
         void updateHealth(int new_health);
-        //void attack(RPG *);
-        //void useSkill(RPG *);
+        void attack(RPG *);
+        void useSkill(RPG *);
 
         // Accessor function
         bool isAlive() const;
