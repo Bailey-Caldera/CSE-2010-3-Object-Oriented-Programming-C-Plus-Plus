@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 /**
  * @brief returns the first indext of the elem, otherwise return -1
@@ -43,17 +45,16 @@ int iterativeSearch(vector<T> v, T elem){
  * @param elem : integer to look for
  * @return int 
  */
-template<typename T>
-int binarySearch(vector<T> v, int start, int end, T elem){
+template <typename T>
+int binarySearch(vector<T> & v, int start, int end, const T& elem){
+
     // write an if statment that check the terminating case
     // inside the if statement return -1
     if (start > end){
         return -1;
     }
-
     // instantiate the mid point
     int mid = (start + end) / 2;
-
     // Use if/else statements to do the following:
     
     if (v[mid] > elem){ // 1) update end (search left half)
@@ -65,9 +66,9 @@ int binarySearch(vector<T> v, int start, int end, T elem){
     else{ // 3) return mid (found the elem)
         return mid;
     }
-
     //return a recursive call to binarySearch(..) 
     return binarySearch(v, start, end, elem);
+    
 }
 
 /**
@@ -107,16 +108,16 @@ int main(){
         int elem = elem_to_find[i];
 
         // stopwatches the time
-        clock_t start = clock(); // start time
+        auto start = high_resolution_clock::now(); // start time
         // call binarySearch with appropriate parameters
         int index_if_found = binarySearch(v, 0, v.size()-1, elem);
-        clock_t end = clock(); // end time
+        auto end = high_resolution_clock::now(); // end time
 
         // calculate the total time it took in seconds
-        double elasp_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
+        auto elasp_time_in_sec = duration_cast<microseconds>(end - start);
 
         //print the index and how long it took to find it
-        cout << index_if_found << ": " << elasp_time_in_sec << endl;
+        cout << index_if_found << ": " << elasp_time_in_sec.count() << endl;
     }
 
     cout << "double" << endl;
@@ -133,15 +134,26 @@ int main(){
         double elem = double_to_find[i];
 
         // stopwatches the time
-        clock_t start = clock(); // start time
+        auto start = high_resolution_clock::now(); // start time
         // call binarySearch with appropriate parameters
         int index_if_found = binarySearch(d, 0, d.size()-1, elem);
-        clock_t end = clock(); // end time
+        auto end = high_resolution_clock::now(); // end time
 
         // calculate the total time it took in seconds
-        double elasp_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
-
+        auto elasp_time_in_sec = duration_cast<microseconds>(end - start);
+        
         //print the index and how long it took to find it
-        cout << index_if_found << ": " << elasp_time_in_sec << endl;
+        cout << index_if_found << ": " << elasp_time_in_sec.count() << endl;
     }
+
+    // string section
+    cout << "String" << endl;
+
+    // initalize naming list and name to find index of
+    vector<string> namingList = {"Adam", "Bill", "Dave", "Zack"};
+    string name = "Dave";
+
+    // get index of name from namingList
+    int index_if_found = binarySearch(namingList, 0, namingList.size()-1, name);
+    cout << index_if_found << endl;
 }

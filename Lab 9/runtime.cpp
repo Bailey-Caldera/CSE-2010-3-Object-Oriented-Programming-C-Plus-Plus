@@ -2,7 +2,9 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 /**
  * @brief returns the first indext of the elem, otherwise return -1
@@ -43,7 +45,7 @@ int iterativeSearch(vector<int> v, int elem){
  * @param elem : integer to look for
  * @return int 
  */
-int binarySearch(vector<int> v, int start, int end, int elem){
+int binarySearch(vector<int> & v, int start, int end, int elem){
     // write an if statment that check the terminating case
     // inside the if statement return -1
     if (start > end){
@@ -91,7 +93,7 @@ void vecGen(string filename, vector<int> &v){
 /**
  * @brief write to file the time it took to search with respect to the 
  * size of the vector n
- * Number of Element(n)     Time(sec)
+ * Number of Element(n)     Time(micro sec)
  * XXXX                     X.XXXXX
  * XXXX                     X.XXXXX
  * 
@@ -102,7 +104,7 @@ void vecGen(string filename, vector<int> &v){
 void writeTime(string filename, const vector<double> times, const vector<int>n){
     ofstream myFile(filename);
 
-    myFile << "Number of Elements (n)\t Time (sec) " << endl;
+    myFile << "Number of Elements (n)\t Time (micro sec) " << endl;
     for(int i = 0; i < times.size(); i++){
         myFile << n[i] << "\t" << times[i] << "\n";
     }
@@ -162,16 +164,16 @@ int main(){
             // the code here should be nearly identical to the code from the previous lab
             int elem = elem_to_find[i];
 
-            clock_t start = clock();
+            auto start = high_resolution_clock::now();
             int index_if_found = iterativeSearch(v, elem);
-            clock_t end = clock(); 
+            auto end = high_resolution_clock::now(); 
 
-            double elapsed_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
-
+            auto elapsed_time_in_sec = duration_cast<microseconds>(end - start);
+            
             // append the elapsed_time_in_sec to the vector, times (hint: push_back())
             // This code should be within the for loop that iterates
             //through all the elements from elem_to_find
-            times.push_back(elapsed_time_in_sec);
+            times.push_back(elapsed_time_in_sec.count());
         }
         
         // outside the for loop that iterate through all the elements from elem_to_find
@@ -216,15 +218,15 @@ int main(){
             int elem = elem_to_find[i];
 
             // measure run time
-            clock_t start = clock();
+            auto start = high_resolution_clock::now();
             int index_if_found = binarySearch(v, 0, v.size()-1, elem);
-            clock_t end = clock(); 
+            auto end = high_resolution_clock::now(); 
 
             // get elapsed time in sec
-            double elapsed_time_in_sec = (double(end - start)/CLOCKS_PER_SEC);
+            auto elapsed_time_in_sec = duration_cast<microseconds>(end - start);
 
             // append time to the vector times
-            times.push_back(elapsed_time_in_sec);
+            times.push_back(elapsed_time_in_sec.count());
         }
         
         // outside the for loop that iterate through all the elements from elem_to_find
